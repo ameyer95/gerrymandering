@@ -23,23 +23,27 @@ class Region:
     def addPiece(self, tile, tileCoords, regionCoords):
         xCoordTile = tileCoords[0]
         yCoordTile = tileCoords[1]
-        openTileCells = tile.getOpenCells()
-        for openCell in openTileCells:
-            xDiff =  openCell[0] - xCoordTile
-            yDiff =  openCell[1] - yCoordTile
+        filledTileCells = tile.getFilledCells()
+        for filledCell in filledTileCells:
+            xDiff =  filledCell[0] - xCoordTile
+            yDiff =  filledCell[1] - yCoordTile
             #not at all sure about the signs on this next line....
             self.grid[regionCoords[0] + xDiff][regionCoords[1] + yDiff] = 1
 
     def removePiece(self, tile, tileCoords, regionCoords):
         xCoordTile = tileCoords[0]
         yCoordTile = tileCoords[1]
-        openTileCells = tile.getOpenCells()
-        for openCell in openTileCells:
-            xDiff =  openCell[0] - xCoordTile
-            yDiff =  openCell[1] - yCoordTile
+        filledTileCells = tile.getFilledCells()
+        for filledCell in filledTileCells:
+            xDiff =  filledCell[0] - xCoordTile
+            yDiff =  filledCell[1] - yCoordTile
             #again, not sure about hte signs on this line
             self.grid[regionCoords[0] + xDiff][regionCoords[1] + yDiff] = 0
 
+    def reset(self):
+        for x in range(self.sideLength):
+            for y in range(self.sideLength):
+                self.grid[x][y] = 0
 
 class Tile:
     def __init__(self):
@@ -51,13 +55,14 @@ class Tile:
         for coord in coords:
             self.grid[coord[0]][coord[1]] = 1
 
-    def getOpenCells(self):
-        openCells = []
+    def getFilledCells(self):
+        filledCells = []
         for x in range(self.sideLength):
             for y in range(self.sideLength):
-                if self.grid[x][y] == 0:
-                    openCells.append([x,y])
-        return openCells
+                if self.grid[x][y] == 1:
+                    filledCells.append([x,y])
+        return filledCells
+
 
 def makeTiles():
     tiles = []
@@ -91,6 +96,7 @@ def makeTiles():
     tile10 = Tile()
     tile10.setOpenSquares([[0,1],[0,2],[0,3],[1,0],[1,1]])
     tiles.append(tile10)
+    
     tile11 = Tile()
     tile11.setOpenSquares([[0,0],[0,1],[0,2],[1,2],[2,2]])
     tiles.append(tile11)
@@ -190,4 +196,5 @@ def makeTiles():
     til20 = Tile()
     til20.setOpenSquares([[0,2],[1,2],[1,1],[2,1],[2,0]])
     tiles.append(til20)
+
     return tiles
