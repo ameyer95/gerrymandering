@@ -3,7 +3,7 @@ import region
 
 def getAllTilings(region, tileSet):
     possiblePieces = piecesToPlace(region,tileSet)
-    print possiblePieces
+    # print possiblePieces
     solutions= []
     for x in possiblePieces:
         region.addPiece(x[1],x[2],x[0])
@@ -14,7 +14,7 @@ def getAllTilings(region, tileSet):
 def tilingRecursive(region, tileSet, pieces, solutions):
     possiblePieces = piecesToPlace(region, tileSet)
     if possiblePieces == []:
-        print "possible pieces is empty"
+        # print "possible pieces is empty"
         if region.partitionedRegion():
             solutions.append(pieces)
         #if pieces == []:
@@ -37,7 +37,7 @@ def tilingRecursive(region, tileSet, pieces, solutions):
         for x in range(0,len(possiblePieces)):
             pieces.append(possiblePieces[x])
             region.addPiece(possiblePieces[x][1],possiblePieces[x][2],possiblePieces[x][0])
-            print "about to recurse"
+            # print "about to recurse"
             tilingRecursive(region, tileSet, pieces, solutions)
             pieces.remove(possiblePieces[x])
             region.removePiece(possiblePieces[x][1],possiblePieces[x][2],possiblePieces[x][0])
