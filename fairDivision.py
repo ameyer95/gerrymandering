@@ -1,4 +1,5 @@
 #fairDivision.py
+import numpy
 
 def main():
     region = getRegion()
