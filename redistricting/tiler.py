@@ -1,5 +1,5 @@
 import region
-
+import tile
 
 def getAllTilings(region, tileSet):
     possiblePieces = piecesToPlace(region,tileSet)
@@ -11,28 +11,15 @@ def getAllTilings(region, tileSet):
         region.reset()
     return solutions
 
+
 def tilingRecursive(region, tileSet, pieces, solutions):
     possiblePieces = piecesToPlace(region, tileSet)
     if possiblePieces == []:
         if region.partitionedRegion():
-            solutions.append(pieces)
-        #if pieces == []:
-         #   raise SystemError()  # basically there should never be a point when no tiles fit on the empty board
-       # pieces.pop() #maybe don't need to pop here because we do it when we recurse back to the else case?
-        # seems possible we don't need these next few lines
-        # regionCoords = remove[0]
-        # tile = remove[1]
-        # tileCenterCoords = remove[2]
-        # region.removeTile(tile,regionCoords,tileCenterCoords)
-        # tilingRecursive(region, tileSet, pieces, solutions)
+            clonedRegion = cloneRegion(region,region.sideLength)
+            solutions.append(clonedRegion)
         return solutions
     else:
-        # I don't think I need these next lines
-        # nextPiece = possiblePieces[-1][1]
-        # nextTileCoords = possiblePieces[-1][0]
-        # nextRegionCoords = possiblePieces[-1][2]
-        # pieces.append(possiblePieces.pop())
-        # region.addPiece(nextPiece, nextTileCoords, nextRegionCoords)
         for x in range(0,len(possiblePieces)):
             pieces.append(possiblePieces[x])
             region.addPiece(possiblePieces[x][1], possiblePieces[x][2], possiblePieces[x][0])
@@ -41,6 +28,12 @@ def tilingRecursive(region, tileSet, pieces, solutions):
             region.removePiece(possiblePieces[x][1], possiblePieces[x][2], possiblePieces[x][0])
         return solutions
 
+def cloneRegion(oldRegion, n):
+    clonedRegion = region.Region(n)
+    for x in range(n):
+        for y in range(n):
+            clonedRegion.grid[x][y] = oldRegion.grid[x][y]
+    return clonedRegion
 
 def tileFits(region,x,y,tile): # determines whether the tile can be placed into the region at position x,y
     # returns a list of all ways a tile can be placed onto a position overlaying x,y (so tries all open slots
@@ -50,14 +43,13 @@ def tileFits(region,x,y,tile): # determines whether the tile can be placed into 
     workingStarts = []
     for filledCell in filledCellsInTile:
         working = True
-        # we need to iterate through each possible overlay of this tile on the spot......
-        # ugh this problem is so computationally intense shoulda stuck with java
+
         xInTile = filledCell[0]
         yInTile = filledCell[1]
         for nextCell in filledCellsInTile:
             differenceX = nextCell[0] - xInTile
             differenceY = nextCell[1] - yInTile
-            if x+differenceX >= region.sideLength or y+differenceY >= region.sideLength or x+differenceX < 0 or y+differenceY < 0 or region.grid[x+differenceX][y+differenceY] != 0:
+            if x-differenceX >= region.sideLength or y-differenceY >= region.sideLength or x-differenceX < 0 or y-differenceY < 0 or region.grid[x-differenceX][y-differenceY] != 0:
                 working = False
         if working:
             workingStarts.append([filledCell,tile,[x,y]])
