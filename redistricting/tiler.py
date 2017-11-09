@@ -17,7 +17,7 @@ def tilingRecursive(region, tileSet, pieces, solutions):
     if possiblePieces == []:
         if region.partitionedRegion():
             clonedRegion = cloneRegion(region,region.sideLength)
-            solutions.append(clonedRegion)
+            solutions.append(clonedRegion.grid)
         return solutions
     else:
         for x in range(0,len(possiblePieces)):
