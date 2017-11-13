@@ -11,39 +11,30 @@ for (i = 0; i < testArray.length; i++) {
     distinctTiles.push(testArray[i])
   }
 }
-distinctTiles.sort();
 
-var testvar = []
+var testvar = [];
 
 var formatDistrict = function(districtID) {
   startIndex = testArray.indexOf(districtID);
-  startSpotX = ((startIndex % (mapsize ** .5))*150)
+  startSpotX = ((startIndex % (mapsize ** .5))*150);
   startSpotY = (parseInt(startIndex / (mapsize ** .5))*150);
-  // testvar.push([startSpotX, startSpotY])
-  stringCoords = startSpotX.toString() + ',' + startSpotY.toString() + ' '
-              + (startSpotX + 125).toString() + ',' + (startSpotY).toString() + ' '
-              + (startSpotX + 125).toString() + ',' + (startSpotY + 125).toString() + ' '
-              + (startSpotX).toString() + ',' + (startSpotY + 125).toString()
 
-  var tileNotComplete = true;
-  var currentIndex = startIndex;
-  var traverseStack = [];
-  while (tileNotComplete) {
-    if (testArray[currentIndex + 1] == districtID) {
-      currentIndex++;
-      traverseStack.push(currentIndex);
-      //extend tile
-    } else if (testArray[currentIndex + 3] == districtID) {
-      currentIndex += 3;
-      traverseStack.push(currentIndex);
-      //extend tile
-    } else {
-      traverseStack.pop();
-      currentIndex = traverseStack[-1];
+  tileIndices = [];
+  for (i = 1; i < testArray.length; i++) {
+    if (testArray[i] == districtID) {
+      tileIndices.push([i % (mapsize ** .5), parseInt(i / (mapsize ** .5))]);
     }
-    tileNotComplete = false;
   }
-  return stringCoords;
+  coordinateString = startSpotX.toString() + "," + startSpotY.toString() + " ";
+
+  for (i = 0; i < tileIndices.length; i++) {
+    polyCoord = (tileIndices[i][0] * 150).toString() + "," + (tileIndices[i][1] * 150).toString() + " "
+              + (tileIndices[i][0] * 150 + 125).toString() + "," + (tileIndices[i][1] * 150).toString() + " "
+              + (tileIndices[i][0] * 150 + 125).toString() + "," + (tileIndices[i][1] * 150 + 125).toString() + " "
+              + (tileIndices[i][0] * 150).toString() + "," + (tileIndices[i][1] * 150 + 125).toString() + " ";
+    coordinateString += polyCoord;
+  }
+  return coordinateString;
 }
 
 var svg = d3.select("#tilingDiv").append("svg")
@@ -51,8 +42,8 @@ var svg = d3.select("#tilingDiv").append("svg")
   .attr("height", height)
   .attr('class', 'mainmap');
 
-districts = svg.selectAll('.districts')
-  .data(distinctTiles)
+var districts = svg.selectAll('.districts')
+  .data(distinctTiles);
 
 districts.enter()
   .append('polygon')
@@ -60,7 +51,18 @@ districts.enter()
   .attr('points', function(d) {
     return formatDistrict(d)
   })
-  .style('fill', 'red');
+  .style('fill', 'red')
+  .on('mouseover', function(d) {
+      d3.select(this).style('fill', 'gray')
+    })
+  .on('mouseout', function(d) {
+    d3.select(this).style('fill', 'red')
+  });
+
+districts.append('svg:title')
+    .text(function(d) {
+        return d
+    });
 
 // tiles = svg.selectAll('.tiles')
 //     .data(testArray);
