@@ -13,10 +13,37 @@ for (i = 0; i < testArray.length; i++) {
 }
 distinctTiles.sort();
 
+var testvar = []
+
 var formatDistrict = function(districtID) {
-  calcDistrictID = districtID + 1;
-  startspot = 'm' + ((testArray.indexOf(districtID)%calcDistrictID)*150).toString() + ',' + (parseInt(testArray.indexOf(districtID)/calcDistrictID)*150).toString();
-  return startspot + ', l0,200, l100,0, l0,-200';
+  startIndex = testArray.indexOf(districtID);
+  startSpotX = ((startIndex % (mapsize ** .5))*150)
+  startSpotY = (parseInt(startIndex / (mapsize ** .5))*150);
+  // testvar.push([startSpotX, startSpotY])
+  stringCoords = startSpotX.toString() + ',' + startSpotY.toString() + ' '
+              + (startSpotX + 125).toString() + ',' + (startSpotY).toString() + ' '
+              + (startSpotX + 125).toString() + ',' + (startSpotY + 125).toString() + ' '
+              + (startSpotX).toString() + ',' + (startSpotY + 125).toString()
+
+  var tileNotComplete = true;
+  var currentIndex = startIndex;
+  var traverseStack = [];
+  while (tileNotComplete) {
+    if (testArray[currentIndex + 1] == districtID) {
+      currentIndex++;
+      traverseStack.push(currentIndex);
+      //extend tile
+    } else if (testArray[currentIndex + 3] == districtID) {
+      currentIndex += 3;
+      traverseStack.push(currentIndex);
+      //extend tile
+    } else {
+      traverseStack.pop();
+      currentIndex = traverseStack[-1];
+    }
+    tileNotComplete = false;
+  }
+  return stringCoords;
 }
 
 var svg = d3.select("#tilingDiv").append("svg")
@@ -28,9 +55,9 @@ districts = svg.selectAll('.districts')
   .data(distinctTiles)
 
 districts.enter()
-  .append('path')
+  .append('polygon')
   .attr('class', 'district')
-  .attr('d', function(d) {
+  .attr('points', function(d) {
     return formatDistrict(d)
   })
   .style('fill', 'red');
