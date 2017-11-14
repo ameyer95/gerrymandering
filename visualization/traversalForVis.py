@@ -9,16 +9,26 @@ def newTraversal():
         startSpotY = (int(startIndex / (mapsize ** .5))*150)
 
         tileIndices = []
-        for i in range(1, len(testArray)):
+        for i in range(len(testArray)):
             if testArray[i] == districtNum:
                 tileIndices.append([int(i % (mapsize ** .5)), int(i / mapsize ** .5)])
 
-        coordinateString = str(startSpotX) + "," + str(startSpotY) + " "
-        for item in tileIndices:
-            polyCoord = str(item[0] * 150) + "," + str(item[1] * 150) + " "
-            coordinateString += polyCoord
 
-        print(coordinateString)
+        print(tileIndices)
+        coordinateList = []
+        for item in tileIndices:
+            coordinateList.append([item[0] * 150, item[1] * 150])
+            coordinateList.append([item[0] * 150 + 125, item[1] * 150])
+            coordinateList.append([item[0] * 150 + 125, item[1] * 150 + 125])
+            coordinateList.append([item[0] * 150, item[1] * 150 + 125])
+
+        print(coordinateList)
+        # coordinateString = str(startSpotX) + "," + str(startSpotY) + " "
+        # for item in tileIndices:
+        #     polyCoord = str(item[0] * 150) + "," + str(item[1] * 150) + " "
+        #     coordinateString += polyCoord
+
+        # print(coordinateString)
 
 
 def main():
@@ -26,6 +36,11 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+"0,0 150,0 275,0 275,125 150,125 0,150 125,150 125,275 0,275 "
 
 # for districtNum in distinctTiles:
 #

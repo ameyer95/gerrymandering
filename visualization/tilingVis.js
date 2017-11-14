@@ -13,6 +13,7 @@ for (i = 0; i < testArray.length; i++) {
 }
 
 var testvar = [];
+var coordinateTest;
 
 var formatDistrict = function(districtID) {
   startIndex = testArray.indexOf(districtID);
@@ -26,13 +27,29 @@ var formatDistrict = function(districtID) {
     }
   }
   coordinateString = startSpotX.toString() + "," + startSpotY.toString() + " ";
-
+  coordinateList = []
   for (i = 0; i < tileIndices.length; i++) {
-    polyCoord = (tileIndices[i][0] * 150).toString() + "," + (tileIndices[i][1] * 150).toString() + " "
-              + (tileIndices[i][0] * 150 + 125).toString() + "," + (tileIndices[i][1] * 150).toString() + " "
-              + (tileIndices[i][0] * 150 + 125).toString() + "," + (tileIndices[i][1] * 150 + 125).toString() + " "
-              + (tileIndices[i][0] * 150).toString() + "," + (tileIndices[i][1] * 150 + 125).toString() + " ";
-    coordinateString += polyCoord;
+    coordinateList.push([tileIndices[i][0] * 150, tileIndices[i][1] * 150]);
+    coordinateList.push([tileIndices[i][0] * 150 + 125, tileIndices[i][1] * 150]);
+    coordinateList.push([tileIndices[i][0] * 150 + 125, tileIndices[i][1] * 150 + 125]);
+    coordinateList.push([tileIndices[i][0] * 150, tileIndices[i][1] * 150 + 125]);
+    coordinateTest = coordinateList;
+  }
+  // coordinateList.sort();
+  var newCoordList = [];
+  for (i = 0; i < coordinateList.length; i++) {
+    var minDistance = 1000;
+    for (j = i+1; j < coordinateList.length; j++) {
+      pointDistance = ((coordinateList[j][0] - coordinateList[i][0])**.5 + (coordinateList[j][1] - coordinateList[i][1])**.5)**2;
+      if (pointDistance < minDistance) {
+        minDistance = pointDistance;
+        minDistanceIndex = j;
+      }
+    }
+    newCoordList.push(coordinateList[minDistanceIndex]);
+  }
+  for (i = 0; i < newCoordList.length; i++) {
+    coordinateString += coordinateList[i][0].toString() + "," + coordinateList[i][1].toString() + " ";
   }
   return coordinateString;
 }
