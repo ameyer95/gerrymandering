@@ -23,58 +23,22 @@ def newTraversal():
             coordinateList.append([item[0] * 150, item[1] * 150 + 125])
 
         print(coordinateList)
-        # coordinateString = str(startSpotX) + "," + str(startSpotY) + " "
-        # for item in tileIndices:
-        #     polyCoord = str(item[0] * 150) + "," + str(item[1] * 150) + " "
-        #     coordinateString += polyCoord
 
-        # print(coordinateString)
+def orderCorners():
+    points = [[0,0], [150,0], [275,0], [275,125], [150,125], [0,150], [125,150], [125,275], [0,275]]
+    newOrder = [points[0]]
+    for i in range(len(points)):
+        anchorPoint = points[i]
+        minDistance = 1000
+        for j in range(len(points)):
+            distance = (points[j][0] - anchorPoint[0]) + (points[j][1] - anchorPoint[1])
+            print(anchorPoint, points[j], distance)
+
 
 
 def main():
-    newTraversal()
+    # newTraversal()
+    orderCorners()
 
 if __name__ == "__main__":
     main()
-
-
-
-
-"0,0 150,0 275,0 275,125 150,125 0,150 125,150 125,275 0,275 "
-
-# for districtNum in distinctTiles:
-#
-#     tileNotComplete = True
-#     traverseStack = [testArray.index(districtNum)]
-#     i = 0
-#     while tileNotComplete:
-#         print(str(i) + "------------")
-#         currentIndex = traverseStack[-1]
-#
-#         try:
-#             if testArray[currentIndex + 1] == districtNum:
-#                 traverseStack.append(currentIndex + 1)
-#                 print('A')
-#                 print(currentIndex)
-#                 print(traverseStack)
-#         except IndexError:
-#             continue
-#
-#         try:
-#             if testArray[currentIndex + int(mapsize**.5)] == districtNum:
-#                 traverseStack.append(currentIndex + int(mapsize**.5))
-#                 print('B')
-#                 print(currentIndex)
-#                 print(traverseStack)
-#         except IndexError:
-#             continue
-#
-#         else:
-#             traverseStack.pop()
-#             if len(traverseStack) == 1:
-#                 tileNotComplete = False
-#             print('C')
-#             print(currentIndex)
-#             print(traverseStack)
-#
-#         i += 1

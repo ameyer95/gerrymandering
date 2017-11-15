@@ -11,8 +11,8 @@ for (i = 0; i < testArray.length; i++) {
     distinctTiles.push(testArray[i])
   }
 }
-
 var testvar = [];
+var indexTest = [];
 var coordinateTest;
 
 var formatDistrict = function(districtID) {
@@ -35,21 +35,15 @@ var formatDistrict = function(districtID) {
     coordinateList.push([tileIndices[i][0] * 150, tileIndices[i][1] * 150 + 125]);
     coordinateTest = coordinateList;
   }
-  // coordinateList.sort();
-  var newCoordList = [];
+
+  newCoordList = [];
   for (i = 0; i < coordinateList.length; i++) {
-    var minDistance = 1000;
-    for (j = i+1; j < coordinateList.length; j++) {
-      pointDistance = ((coordinateList[j][0] - coordinateList[i][0])**.5 + (coordinateList[j][1] - coordinateList[i][1])**.5)**2;
-      if (pointDistance < minDistance) {
-        minDistance = pointDistance;
-        minDistanceIndex = j;
-      }
-    }
-    newCoordList.push(coordinateList[minDistanceIndex]);
+    anchorPoint = coordinateList[i];
+    newCoordList.push(anchorPoint);
   }
+
   for (i = 0; i < newCoordList.length; i++) {
-    coordinateString += coordinateList[i][0].toString() + "," + coordinateList[i][1].toString() + " ";
+    coordinateString += newCoordList[i][0].toString() + "," + newCoordList[i][1].toString() + " ";
   }
   return coordinateString;
 }
