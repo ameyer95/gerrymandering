@@ -33,6 +33,9 @@ def orderCorners():
         for j in range(len(points)):
             distance = (points[j][0] - anchorPoint[0]) + (points[j][1] - anchorPoint[1])
             print(anchorPoint, points[j], distance)
+            if distance < minDistance:
+                minDistance = distance
+        print(minDistance)        
 
 
 
