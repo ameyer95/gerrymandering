@@ -3,7 +3,7 @@ var width = numSideElements * 150;
 var height = numSideElements * 150;
 var fills = ['orange', 'purple', 'green'];
 var testvar;
-var testArray = [1,1,0,1,0,0,2,2,2];
+var testArray = [0,0,1,0,1,1,2,2,2];
 var mapsize = testArray.length;
 var distinctTiles = [];
 for (i = 0; i < testArray.length; i++) {
@@ -14,6 +14,7 @@ for (i = 0; i < testArray.length; i++) {
 var testvar = [];
 var indexTest = [];
 var coordinateTest;
+var coordinateLists = [];
 
 var formatDistrict = function(districtID) {
   startIndex = testArray.indexOf(districtID);
@@ -21,7 +22,7 @@ var formatDistrict = function(districtID) {
   startSpotY = (parseInt(startIndex / (mapsize ** .5))*150);
 
   tileIndices = [];
-  for (i = 1; i < testArray.length; i++) {
+  for (i = 0; i < testArray.length; i++) {
     if (testArray[i] == districtID) {
       tileIndices.push([i % (mapsize ** .5), parseInt(i / (mapsize ** .5))]);
     }
@@ -36,14 +37,15 @@ var formatDistrict = function(districtID) {
     coordinateTest = coordinateList;
   }
 
-  newCoordList = [];
-  for (i = 0; i < coordinateList.length; i++) {
-    anchorPoint = coordinateList[i];
-    newCoordList.push(anchorPoint);
-  }
+  neworder = [coordinateList[0]];
 
-  for (i = 0; i < newCoordList.length; i++) {
-    coordinateString += newCoordList[i][0].toString() + "," + newCoordList[i][1].toString() + " ";
+
+
+
+
+
+  for (i = 0; i < neworder.length; i++) {
+    coordinateString += neworder[i][0].toString() + "," + neworder[i][1].toString() + " ";
   }
   return coordinateString;
 }
