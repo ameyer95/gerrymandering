@@ -19,9 +19,9 @@ def createVertices(matrix, districtID):
     coordinateList = []
     for i in range(len(tileIndices)):
         coordinateList.append([int(tileIndices[i][0] * 150), int(tileIndices[i][1] * 150)])
-        coordinateList.append([int(tileIndices[i][0] * 150 + 140), int(tileIndices[i][1] * 150)])
-        coordinateList.append([int(tileIndices[i][0] * 150 + 140), int(tileIndices[i][1] * 150 + 140)])
-        coordinateList.append([int(tileIndices[i][0] * 150), int(tileIndices[i][1] * 150 + 140)])
+        coordinateList.append([int(tileIndices[i][0] * 150 + 125), int(tileIndices[i][1] * 150)])
+        coordinateList.append([int(tileIndices[i][0] * 150 + 125), int(tileIndices[i][1] * 150 + 125)])
+        coordinateList.append([int(tileIndices[i][0] * 150), int(tileIndices[i][1] * 150 + 125)])
 
     return coordinateList
 
@@ -30,20 +30,20 @@ def traverseVertices(vertices):
     for i in range(len(vertices)):
         vertex = neworder[i]
         distanceFromOrigin = abs(vertex[0] - neworder[0][0]) + abs(vertex[1] - neworder[0][1])
-        if counter >= 3 and distanceFromOrigin <= 140:
+        if counter >= 3 and distanceFromOrigin <= 125:
             neworder.append(neworder[0])
             break
 
         possiblemoves = []
         for checkvertex in vertices:
             distance = abs(checkvertex[0] - vertex[0]) + abs(checkvertex[1] - vertex[1])
-            if 0 < distance <= 140 and checkvertex not in neworder:
+            if 0 < distance <= 125 and checkvertex not in neworder:
                 possiblemoves.append(checkvertex)
 
         shortmovePossible = False
         for move in possiblemoves:
             distance = abs(move[0] - vertex[0]) + abs(move[1] - vertex[1])
-            if distance == 10:
+            if distance == 25:
                 shortmovePossible = True
                 neworder.append(move)
                 if abs(move[1] - vertex[1]) == 0:
