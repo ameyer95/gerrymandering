@@ -1,18 +1,19 @@
 var numSideElements = 5;
 var width = numSideElements * 120;
 var height = numSideElements * 120;
-var testArray = [0,0,0,0,2,0,4,4,4,2,1,1,3,4,2,1,1,3,4,2,1,3,3,3,2];
-var mapsize = testArray.length;
+var currentMapIndex = 0;
+var testArray = [[0,0,0,0,2,0,4,4,4,2,1,1,3,4,2,1,1,3,4,2,1,3,3,3,2],[0,1,1,1,2,0,3,3,1,2,0,3,3,1,2,0,0,1,2,2,4,4,4,4,4]];
+var mapsize = testArray[currentMapIndex].length;
 var distinctTiles = [];
-for (i = 0; i < testArray.length; i++) {
-  if (!distinctTiles.includes(testArray[i])) {
-    distinctTiles.push(testArray[i])
+for (i = 0; i < testArray[currentMapIndex].length; i++) {
+  if (!distinctTiles.includes(testArray[currentMapIndex][i])) {
+    distinctTiles.push(testArray[currentMapIndex][i])
   }
 }
-testOrderedPoints = [[[0, 0], [112, 0], [120, 0], [232, 0], [240, 0], [352, 0], [360, 0], [472, 0], [472, 112], [360, 112], [352, 112], [240, 112], [232, 112], [120, 112], [112, 112], [112, 120], [112, 232], [0, 232], [0, 120], [0, 112], [0, 0]], [[0, 240], [112, 240], [120, 240], [232, 240], [232, 352], [232, 360], [232, 472], [120, 472], [112, 472], [112, 480], [112, 592], [0, 592], [0, 480], [0, 472], [0, 360], [0, 352], [0, 240]], [[480, 0], [592, 0], [592, 112], [592, 120], [592, 232], [592, 240], [592, 352], [592, 360], [592, 472], [592, 480], [592, 592], [480, 592], [480, 480], [480, 472], [480, 360], [480, 352], [480, 240], [480, 232], [480, 120], [480, 112], [480, 0]], [[240, 240], [352, 240], [352, 352], [352, 360], [352, 472], [352, 480], [360, 480], [472, 480], [472, 592], [360, 592], [352, 592], [240, 592], [232, 592], [120, 592], [120, 480], [232, 480], [240, 480], [240, 472], [240, 360], [240, 352], [240, 240]], [[120, 120], [232, 120], [240, 120], [352, 120], [360, 120], [472, 120], [472, 232], [472, 240], [472, 352], [472, 360], [472, 472], [360, 472], [360, 360], [360, 352], [360, 240], [360, 232], [352, 232], [240, 232], [232, 232], [120, 232], [120, 120]]];
-
+testOrderedPoints = [[[[0, 0], [112, 0], [120, 0], [232, 0], [240, 0], [352, 0], [360, 0], [472, 0], [472, 112], [360, 112], [352, 112], [240, 112], [232, 112], [120, 112], [112, 112], [112, 120], [112, 232], [0, 232], [0, 120], [0, 112], [0, 0]], [[0, 240], [112, 240], [120, 240], [232, 240], [232, 352], [232, 360], [232, 472], [120, 472], [112, 472], [112, 480], [112, 592], [0, 592], [0, 480], [0, 472], [0, 360], [0, 352], [0, 240]], [[480, 0], [592, 0], [592, 112], [592, 120], [592, 232], [592, 240], [592, 352], [592, 360], [592, 472], [592, 480], [592, 592], [480, 592], [480, 480], [480, 472], [480, 360], [480, 352], [480, 240], [480, 232], [480, 120], [480, 112], [480, 0]], [[240, 240], [352, 240], [352, 352], [352, 360], [352, 472], [352, 480], [360, 480], [472, 480], [472, 592], [360, 592], [352, 592], [240, 592], [232, 592], [120, 592], [120, 480], [232, 480], [240, 480], [240, 472], [240, 360], [240, 352], [240, 240]], [[120, 120], [232, 120], [240, 120], [352, 120], [360, 120], [472, 120], [472, 232], [472, 240], [472, 352], [472, 360], [472, 472], [360, 472], [360, 360], [360, 352], [360, 240], [360, 232], [352, 232], [240, 232], [232, 232], [120, 232], [120, 120]]]
+,[[[0, 0], [112, 0], [112, 112], [112, 120], [112, 232], [112, 240], [112, 352], [112, 360], [120, 360], [232, 360], [232, 472], [120, 472], [112, 472], [0, 472], [0, 360], [0, 352], [0, 240], [0, 232], [0, 120], [0, 112], [0, 0]], [[120, 0], [232, 0], [240, 0], [352, 0], [360, 0], [472, 0], [472, 112], [472, 120], [472, 232], [472, 240], [472, 352], [360, 352], [360, 240], [360, 232], [360, 120], [360, 112], [352, 112], [240, 112], [232, 112], [120, 112], [120, 0]], [[480, 0], [592, 0], [592, 112], [592, 120], [592, 232], [592, 240], [592, 352], [592, 360], [592, 472], [480, 472], [472, 472], [360, 472], [360, 360], [472, 360], [480, 360], [480, 352], [480, 240], [480, 232], [480, 120], [480, 112], [480, 0]], [[120, 120], [232, 120], [240, 120], [352, 120], [352, 232], [352, 240], [352, 352], [352, 360], [352, 472], [240, 472], [240, 360], [240, 352], [232, 352], [120, 352], [120, 240], [120, 232], [120, 120]], [[0, 480], [112, 480], [120, 480], [232, 480], [240, 480], [352, 480], [360, 480], [472, 480], [480, 480], [592, 480], [592, 592], [480, 592], [472, 592], [360, 592], [352, 592], [240, 592], [232, 592], [120, 592], [112, 592], [0, 592], [0, 480]]]];
 var hoveredDistrict = 0;
-var districtVote = [.6,.45,.2,.45,.51];
+var districtVote = [.62,.62,.47,.37,.52];
 
 var searchArrayForCoordinates = function(coordinates, checklist) {
   for (i = 0; i < checklist.length; i++) {
@@ -24,7 +25,7 @@ var searchArrayForCoordinates = function(coordinates, checklist) {
 }
 
 var formatDistrict = function(districtID) {
-  neworder = testOrderedPoints[districtID];
+  neworder = testOrderedPoints[currentMapIndex][districtID];
   coordinateString = "";
   for (i = 0; i < neworder.length; i++) {
     coordinateString += neworder[i][0].toString() + "," + neworder[i][1].toString() + " ";
@@ -33,6 +34,8 @@ var formatDistrict = function(districtID) {
 }
 
 var buildMap = function() {
+  d3.selectAll('.mainmap').remove();
+
   var minDataVal = d3.min(districtVote);
   var medDataVal = .5;
   var maxDataVal = d3.max(districtVote);
@@ -103,7 +106,7 @@ var buildSidePanel = function() {
       .attr('class', 'demBar')
       .style('fill', 'steelblue')
       .attr('height', 15)
-      .attr('y', '28%')
+      .attr('y', '14%')
       .attr('x', '20%');
 
   demBar
@@ -119,14 +122,78 @@ var buildSidePanel = function() {
       .attr('class', 'repBar')
 			.style('fill', 'crimson')
       .attr('height', 15)
-      .attr('y', '33%')
+      .attr('y', '26%')
       .attr('x', '20%');
 
   repBar
       .attr('width', function(d) {
           return 300 * (1 - districtVote[hoveredDistrict]);
       });
+
+  svg.append('text')
+      .text('Dem Pct. Vote')
+      .attr("x", "40%")
+      .attr("y", "12%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'middle');
+
+  svg.append('text')
+      .text(function(d) {return String(districtVote[hoveredDistrict])})
+      .attr("x", "85%")
+      .attr("y", "16%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'middle');
+
+  svg.append('text')
+      .text('Rep Pct. Vote')
+      .attr("x", "40%")
+      .attr("y", "24%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'middle');
+
+  svg.append('text')
+      .text(function(d) {return String(1 - districtVote[hoveredDistrict])})
+      .attr("x", "85%")
+      .attr("y", "28%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'middle');
 }
 
 buildMap();
 buildSidePanel();
+
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+function drawNewDistricts() {
+    currentMapIndex = 1;
+    buildMap();
+    buildSidePanel();
+}

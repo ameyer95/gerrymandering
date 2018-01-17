@@ -16,6 +16,7 @@
 
         #tilingDiv {
           padding-left: 20px;
+          padding-top: 60px;
           float: left;
           width: 620px;
           margin: 0 auto;
@@ -34,12 +35,88 @@
           padding-top: 10px;
         }
 
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Dropdown button on hover & focus */
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: fixed;
+            float: left;
+            padding-left: 80px;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: arial;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {display:block;}
+
+        /* Generate Map Button */
+        .mapbtn {
+            background-color: #f4511e;
+            color: white;
+            padding: 16px;
+            margin-left: 120px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Dropdown button on hover & focus */
+        .mapbtn:hover, .mapbtn:focus {
+            background-color: orange;
+        }
+
     </style>
 </head>
 
 <body>
-    <h1> District Tiling Simulation </h1>
-    <br><br>
+    <h1> Districting Squarestate </h1>
+    <br>
+
+    <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn">Change Vote Dist.</button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="#">Uniform</a>
+        <a href="#">Uniform .4-.6</a>
+        <a href="#">Normal</a>
+        <a href="#">Normal .4-.6</a>
+        <a href="#">Biased</a>
+      </div>
+      <button onclick="drawNewDistricts()" class="mapbtn">New Districting</button>
+    </div>
+
     <div id="tilingDiv"></div>
     <div id="sideStuff"></div>
 </body>
