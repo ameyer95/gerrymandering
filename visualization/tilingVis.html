@@ -93,9 +93,26 @@
             cursor: pointer;
         }
 
-        /* Dropdown button on hover & focus */
+        /* Map button on hover & focus */
         .mapbtn:hover, .mapbtn:focus {
-            background-color: orange;
+            background-color: #ce4216;
+        }
+
+        .dropButton {
+            background-color: #f9f9f9;
+            color: black;
+            padding: 12px 16px;
+            padding-right: 50px;
+            text-decoration: none;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            display: block;
+        }
+
+        /* Map button on hover & focus */
+        .dropButton:hover, .dropButton:focus {
+            background-color: #f1f1f1;
         }
 
     </style>
@@ -108,11 +125,11 @@
     <div class="dropdown">
       <button onclick="myFunction()" class="dropbtn">Change Vote Dist.</button>
       <div id="myDropdown" class="dropdown-content">
-        <a href="#">Uniform</a>
-        <a href="#">Uniform .4-.6</a>
-        <a href="#">Normal</a>
-        <a href="#">Normal .4-.6</a>
-        <a href="#">Biased</a>
+        <button onclick="distributeVoteUniform()" class="dropButton">Uniform</button>
+        <button onclick="distributeVoteUniformTrimmed()" class="dropButton">Uniform .4-.6</button>
+        <button onclick="distributeVoteNormal()" class="dropButton">Normal</button>
+        <button onclick="distributeVoteNormalTrimmed()" class="dropButton">Normal .4-.6</button>
+        <button onclick="distributeVoteBiased()" class="dropButton">Biased</button>
       </div>
       <button onclick="drawNewDistricts()" class="mapbtn">New Districting</button>
     </div>
