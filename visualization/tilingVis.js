@@ -186,7 +186,11 @@ function distributeVoteUniform() {
   buildMap();
 }
 function distributeVoteUniformTrimmed() {
-  districtVote = [.5,.5,.5,.5,.5];
+  tempArr = [];
+  for (i = 0; i < 5; i++) {
+    tempArr.push(Number((.2*Math.random() + .4).toFixed(2)));
+  }
+  districtVote = tempArr;
   buildMap();
 }
 function distributeVoteNormal() {
@@ -204,10 +208,6 @@ function distributeVoteNormal() {
     tempArr.push(average);
   }
   districtVote = tempArr;
-  buildMap();
-}
-function distributeVoteNormalTrimmed() {
-  districtVote = [.5,.5,.5,.5,.5];
   buildMap();
 }
 function distributeVoteBiased() {
