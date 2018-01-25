@@ -1,19 +1,20 @@
-# firsttest = [[0,0],[125,0],[150,0],[125,125],[0,125],[150,125],[275,125],[275,0],[0,150],[0,275],[125,150],[125,275]]
-# secondtest = [[0, 300],[125, 300],[125, 425],[0, 425],[150, 300],[275, 300],[275, 425],[150, 425],[300, 300],[425, 300],[425, 425],[300, 425]]
+import pickle
+import pandas as pd
 
-# testmatrix = [0,0,0,0,2,0,4,4,4,2,1,1,3,4,2,1,1,3,4,2,1,3,3,3,2]
-testmatrix = [0,1,1,1,2,0,3,3,1,2,0,3,3,1,2,0,0,3,2,2,4,4,4,4,4]
-mapsize = len(testmatrix)
-distinctTiles = list(set(testmatrix))
+allTilings = pickle.load(open("tilings.p", "rb"))
+polsbyScores = pickle.load(open("polsbyScores.P", "rb"))
+reockScores = pickle.load(open("reockScores.P", "rb"))
 
-def createVertices(matrix, districtID):
+print(reockScores)
+
+def createVertices(matrix, districtID, mapsize):
     startIndex = matrix.index(districtID)
     startSpotX = ((startIndex % (mapsize ** .5))*150)
     startSpotY = (int(startIndex / (mapsize ** .5))*150)
 
     tileIndices = []
     for i in range(len(matrix)):
-        if testmatrix[i] == districtID:
+        if matrix[i] == districtID:
             tileIndices.append([i % (mapsize ** .5), int(i / (mapsize ** .5))])
 
     coordinateString = str(startSpotX) + "," + str(startSpotY) + " "
@@ -73,11 +74,10 @@ def traverseVertices(vertices):
 
     return neworder
 
-
-def main():
+def compileDistrict(testmatrix, mapsize, distinctTiles):
     inorder = []
     for i in range(len(distinctTiles)):
-        inorder.append(traverseVertices(createVertices(testmatrix, i)))
+        inorder.append(traverseVertices(createVertices(testmatrix, i, mapsize)))
 
     scaledInorder = []
     for i, tile in enumerate(inorder):
@@ -85,7 +85,26 @@ def main():
         for coordinate in tile:
             scaledInorder[i].append([int(coordinate[0]*.8), int(coordinate[1]*.8)])
 
-    print(scaledInorder)
+    return scaledInorder
+
+def main():
+    masterDistrictList = []
+    for i in range(len(allTilings)):
+        testmatrix_ = allTilings[i]
+        mapsize_ = len(testmatrix_)
+        distinctTiles_ = list(set(testmatrix_))
+
+        masterDistrictList.append([testmatrix_, compileDistrict(testmatrix_, mapsize_, distinctTiles_)])
+
+    #Create dataframe and csv file
+    dfList = [[],[]]
+    for block in masterDistrictList:
+        dfList[0].append(block[0])
+        dfList[1].append(block[1])
+
+    mydf = pd.DataFrame(dfList).transpose()
+    mydf.to_csv("tilingdata.csv", index = False)
 
 if __name__ == "__main__":
-    main()
+    _ = 5
+    # main()

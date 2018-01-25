@@ -3,30 +3,13 @@ var width = numSideElements * 120;
 var height = numSideElements * 120;
 var currentMapIndex = 0;
 var districtData;
-var testArray = [[0,0,0,0,2,0,4,4,4,2,1,1,3,4,2,1,1,3,4,2,1,3,3,3,2],[0,1,1,1,2,0,3,3,1,2,0,3,3,1,2,0,0,1,2,2,4,4,4,4,4]];
-var mapsize = testArray[currentMapIndex].length;
+var mapsize = 25;
 var distinctTiles = [];
-for (i = 0; i < testArray[currentMapIndex].length; i++) {
-  if (!distinctTiles.includes(testArray[currentMapIndex][i])) {
-    distinctTiles.push(testArray[currentMapIndex][i])
-  }
-}
-testOrderedPoints = [[[[0, 0], [112, 0], [120, 0], [232, 0], [240, 0], [352, 0], [360, 0], [472, 0], [472, 112], [360, 112], [352, 112], [240, 112], [232, 112], [120, 112], [112, 112], [112, 120], [112, 232], [0, 232], [0, 120], [0, 112], [0, 0]], [[0, 240], [112, 240], [120, 240], [232, 240], [232, 352], [232, 360], [232, 472], [120, 472], [112, 472], [112, 480], [112, 592], [0, 592], [0, 480], [0, 472], [0, 360], [0, 352], [0, 240]], [[480, 0], [592, 0], [592, 112], [592, 120], [592, 232], [592, 240], [592, 352], [592, 360], [592, 472], [592, 480], [592, 592], [480, 592], [480, 480], [480, 472], [480, 360], [480, 352], [480, 240], [480, 232], [480, 120], [480, 112], [480, 0]], [[240, 240], [352, 240], [352, 352], [352, 360], [352, 472], [352, 480], [360, 480], [472, 480], [472, 592], [360, 592], [352, 592], [240, 592], [232, 592], [120, 592], [120, 480], [232, 480], [240, 480], [240, 472], [240, 360], [240, 352], [240, 240]], [[120, 120], [232, 120], [240, 120], [352, 120], [360, 120], [472, 120], [472, 232], [472, 240], [472, 352], [472, 360], [472, 472], [360, 472], [360, 360], [360, 352], [360, 240], [360, 232], [352, 232], [240, 232], [232, 232], [120, 232], [120, 120]]]
-,[[[0, 0], [112, 0], [112, 112], [112, 120], [112, 232], [112, 240], [112, 352], [112, 360], [120, 360], [232, 360], [232, 472], [120, 472], [112, 472], [0, 472], [0, 360], [0, 352], [0, 240], [0, 232], [0, 120], [0, 112], [0, 0]], [[120, 0], [232, 0], [240, 0], [352, 0], [360, 0], [472, 0], [472, 112], [472, 120], [472, 232], [472, 240], [472, 352], [360, 352], [360, 240], [360, 232], [360, 120], [360, 112], [352, 112], [240, 112], [232, 112], [120, 112], [120, 0]], [[480, 0], [592, 0], [592, 112], [592, 120], [592, 232], [592, 240], [592, 352], [592, 360], [592, 472], [480, 472], [472, 472], [360, 472], [360, 360], [472, 360], [480, 360], [480, 352], [480, 240], [480, 232], [480, 120], [480, 112], [480, 0]], [[120, 120], [232, 120], [240, 120], [352, 120], [352, 232], [352, 240], [352, 352], [352, 360], [352, 472], [240, 472], [240, 360], [240, 352], [232, 352], [120, 352], [120, 240], [120, 232], [120, 120]], [[0, 480], [112, 480], [120, 480], [232, 480], [240, 480], [352, 480], [360, 480], [472, 480], [480, 480], [592, 480], [592, 592], [480, 592], [472, 592], [360, 592], [352, 592], [240, 592], [232, 592], [120, 592], [112, 592], [0, 592], [0, 480]]]];
 var hoveredDistrict = 0;
 var districtVote = [.62,.62,.47,.37,.52];
 
-var searchArrayForCoordinates = function(coordinates, checklist) {
-  for (i = 0; i < checklist.length; i++) {
-    if ((checklist[i][0] == coordinates[0]) && (checklist[i][1] == coordinates[1])) {
-      return true;
-    }
-  }
-  return false;
-}
-
 var formatDistrict = function(districtID) {
-  neworder = testOrderedPoints[currentMapIndex][districtID];
+  neworder = districtData[currentMapIndex][1][districtID];
   coordinateString = "";
   for (i = 0; i < neworder.length; i++) {
     coordinateString += neworder[i][0].toString() + "," + neworder[i][1].toString() + " ";
@@ -168,12 +151,29 @@ var buildSidePanel = function() {
       .style('text-anchor', 'middle');
 }
 
-buildMap();
-buildSidePanel();
-
-d3.csv('districtings.csv', function(csvData) {
+d3.csv('tilingdata.csv', function(csvData) {
     districtData = csvData;
+    for (i = 0; i < districtData.length; i++) {
+      districtData[i][0] = JSON.parse(districtData[i][0]);
+      districtData[i][1] = JSON.parse(districtData[i][1]);
+    }
+
+    for (i = 0; i < districtData[currentMapIndex][0].length; i++) {
+      if (!distinctTiles.includes(districtData[currentMapIndex][0][i])) {
+        distinctTiles.push(districtData[currentMapIndex][0][i])
+      }
+    }
+
+    buildMap();
+    buildSidePanel();
 });
+
+function drawNewDistricts() {
+    currentMapIndex = Math.floor(Math.random()*4005);
+    buildMap();
+    buildSidePanel();
+};
+
 
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
@@ -210,6 +210,7 @@ function distributeVoteNormal() {
   districtVote = tempArr;
   buildMap();
 }
+
 function distributeVoteBiased() {
   districtVote = [.5,.5,.5,.5,.5];
   buildMap();
@@ -228,10 +229,4 @@ window.onclick = function(event) {
       }
     }
   }
-}
-
-function drawNewDistricts() {
-    currentMapIndex = 1;
-    buildMap();
-    buildSidePanel();
 }
