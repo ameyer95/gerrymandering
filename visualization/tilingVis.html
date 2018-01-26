@@ -26,7 +26,14 @@
           float: left;
           padding-left: 40px;
           width: 320px;
-          height: 550px;
+          height: 300px;
+        }
+
+        #voteScatter {
+          float: left;
+          padding-left: 40px;
+          width: 320px;
+          height: 300px;
         }
 
         .mainmap {
@@ -53,7 +60,7 @@
         .dropdown {
             position: fixed;
             float: left;
-            padding-left: 80px;
+            padding-left: 50px;
         }
 
         /* Dropdown Content (Hidden by Default) */
@@ -86,7 +93,7 @@
             background-color: #f4511e;
             color: white;
             padding: 16px;
-            margin-left: 120px;
+            margin-left: 60px;
             font-size: 16px;
             border: none;
             cursor: pointer;
@@ -114,6 +121,21 @@
             background-color: #f1f1f1;
         }
 
+        .togglebtn {
+            background-color: blue;
+            color: white;
+            padding: 16px;
+            margin-left: 100px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Map button on hover & focus */
+        .togglebtn:hover, .togglebtn:focus {
+            background-color: #0000cc;
+        }
+
     </style>
 </head>
 
@@ -130,10 +152,13 @@
         <button onclick="distributeVoteBiased()" class="dropButton">Biased</button>
       </div>
       <button onclick="drawNewDistricts()" class="mapbtn">New Districting</button>
+      <button onclick="mapToggle()" class="togglebtn">Toggle</button>
+
     </div>
 
     <div id="tilingDiv"></div>
     <div id="sideStuff"></div>
+    <div id="voteScatter"></div>
 </body>
 <script src="tilingVis.js"></script>
 </html>
