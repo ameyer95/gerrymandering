@@ -9,7 +9,7 @@ var distinctTiles = [];
 var hoveredDistrict = 0;
 var districtVote = [.62,.62,.47,.37,.52];
 var individualDistrictVoteTest = [.4,.35,.38,.39,.28,.35,.5,.75,.8,.20,.48,.58,.90,.68,.3,.33,.78,.85,.42,.36,.38,.45,.4,.37,.35,];
-var stateMeanVote;
+var stateMeanVote = 0
 for (i = 0; i < individualDistrictVoteTest.length; i++) {
   stateMeanVote += individualDistrictVoteTest[i];
 }
@@ -238,33 +238,53 @@ var buildIndivVoteSidePanel = function() {
 
   svg.append('text')
       .text('Democrats')
-      .attr("x", "10%")
+      .attr("x", "5%")
       .attr("y", "18%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
       .style('text-anchor', 'left');
 
-  demBar = svg.selectAll('.demBar')
-      .data(stateMeanVote);
+  svg.append('text')
+      .text((stateMeanVote*100).toFixed(1))
+      .attr("x", "5%")
+      .attr("y", "22%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'left');
 
-  demBar.enter()
-      .append('rect')
-      .attr('class', 'demBar')
+  svg.append('rect')
       .style('fill', 'steelblue')
       .attr('height', 15)
-      .attr('y', '14%')
+      .attr('y', '20%')
       .attr('x', '20%')
       .attr('width', 300*stateMeanVote);
 
   svg.append('text')
       .text('Republicans')
-      .attr("x", "10%")
-      .attr("y", "27%")
+      .attr("x", "5%")
+      .attr("y", "30%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
       .style('text-anchor', 'left');
+
+  svg.append('text')
+      .text(((1 - stateMeanVote)*100).toFixed(1))
+      .attr("x", "5%")
+      .attr("y", "34%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '90%')
+      .style('text-anchor', 'left');
+
+  svg.append('rect')
+      .style('fill', 'crimson')
+      .attr('height', 15)
+      .attr('y', '32%')
+      .attr('x', '20%')
+      .attr('width', 300*(1 - stateMeanVote));
 }
 
 var voteScatter = function() {
@@ -282,6 +302,7 @@ var voteScatter = function() {
     .append('circle')
     .attr('class', 'points')
     .attr('r', 3)
+    .style('fill', 'gray')
     .attr('cx', function(d, i) {
       return 50 * i + 50
     })
