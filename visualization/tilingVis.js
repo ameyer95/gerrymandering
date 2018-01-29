@@ -70,7 +70,8 @@ var buildMap = function() {
     .on('mouseover', function(d) {
         d3.select(this).style('stroke', 'black').style('stroke-width', '5px')
         hoveredDistrict = d
-        buildSidePanel();
+        buildSidePanel()
+        voteScatter();
       })
     .on('mouseout', function(d) {
       d3.select(this).style('stroke', 'red').style('stroke-width', '0px')
@@ -206,6 +207,15 @@ var buildSidePanel = function() {
       .style('font-family', 'courier')
       .style('font-size', '90%')
       .style('text-anchor', 'middle');
+
+  svg.append('text')
+    .text('Democrat Vote Share by District')
+    .attr("x", "5%")
+    .attr("y", '52%')
+    .style('fill', 'black')
+    .style('font-family', 'courier')
+    .style('font-size', '90%')
+    .style('text-anchor', 'left');
 }
 
 var buildIndivVoteSidePanel = function() {
@@ -216,21 +226,10 @@ var buildIndivVoteSidePanel = function() {
       .attr('width', 320)
       .attr('height', height - 50);
 
-  //label for side panel
-  svg.append('text')
-      .text("Vote Distribution Info.")
-      .attr("x", "50%")
-      .attr("y", "3%")
-      .style('fill', 'black')
-      .style('font-family', 'courier')
-      .style('font-size', '120%')
-      .style('font-weight', 'bold')
-      .style('text-anchor', 'middle');
-
   svg.append('text')
       .text('Vote Share Statewide')
       .attr("x", "45%")
-      .attr("y", "12%")
+      .attr("y", "3%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '100%')
@@ -239,7 +238,7 @@ var buildIndivVoteSidePanel = function() {
   svg.append('text')
       .text('Democrats')
       .attr("x", "5%")
-      .attr("y", "18%")
+      .attr("y", "9%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
@@ -248,7 +247,7 @@ var buildIndivVoteSidePanel = function() {
   svg.append('text')
       .text((stateMeanVote*100).toFixed(1))
       .attr("x", "5%")
-      .attr("y", "22%")
+      .attr("y", "13%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
@@ -257,14 +256,14 @@ var buildIndivVoteSidePanel = function() {
   svg.append('rect')
       .style('fill', 'steelblue')
       .attr('height', 15)
-      .attr('y', '20%')
+      .attr('y', '11%')
       .attr('x', '20%')
       .attr('width', 300*stateMeanVote);
 
   svg.append('text')
       .text('Republicans')
       .attr("x", "5%")
-      .attr("y", "30%")
+      .attr("y", "20%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
@@ -273,7 +272,7 @@ var buildIndivVoteSidePanel = function() {
   svg.append('text')
       .text(((1 - stateMeanVote)*100).toFixed(1))
       .attr("x", "5%")
-      .attr("y", "34%")
+      .attr("y", "24%")
       .style('fill', 'black')
       .style('font-family', 'courier')
       .style('font-size', '90%')
@@ -282,9 +281,49 @@ var buildIndivVoteSidePanel = function() {
   svg.append('rect')
       .style('fill', 'crimson')
       .attr('height', 15)
-      .attr('y', '32%')
+      .attr('y', '22%')
       .attr('x', '20%')
       .attr('width', 300*(1 - stateMeanVote));
+
+  svg.append('text')
+      .text('Seat Share')
+      .attr("x", "40%")
+      .attr("y", "31%")
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '100%')
+      .style('text-anchor', 'middle');
+
+  var seats = svg.selectAll('.seats')
+    .data(districtVote);
+
+  seats.enter()
+    .append('rect')
+    .attr('x', function(d, i) {
+      return String(10 + i*15) + "%"
+    })
+    .attr('y', '35%')
+    .attr('height', 30)
+    .attr('width', 20)
+    .style('fill', function(d) {
+      if (d < .5) {
+        return 'crimson'
+      } else if (d > .5) {
+        return 'steelblue'
+      } else if (d == .5) {
+        return 'white'
+      }
+    });
+
+
+  svg.append('text')
+    .text('Democrat Vote Share by District')
+    .attr("x", "5%")
+    .attr("y", '52%')
+    .style('fill', 'black')
+    .style('font-family', 'courier')
+    .style('font-size', '90%')
+    .style('text-anchor', 'left');
 }
 
 var voteScatter = function() {
@@ -295,37 +334,86 @@ var voteScatter = function() {
       .attr('width', 320)
       .attr('height', height - 50);
 
+  svg.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 300)
+      .attr('height', 250)
+      .style('fill', '#ededed')
+
+  svg.append('text')
+    .text('District Number')
+    .attr("x", "27%")
+    .attr("y", '54%')
+    .style('fill', 'black')
+    .style('font-family', 'courier')
+    .style('font-size', '90%')
+    .style('text-anchor', 'left');
+
+  for (i = 0; i < 5; i++) {
+    svg.append('path')
+      .attr('d', 'M' + String(50*i + 50) + ' 0 L' + String(50*i + 50) + ' 250')
+      .style('stroke', 'white')
+      .style('stroke-width', '3px');
+
+    svg.append('text')
+      .text(String(i + 1))
+      .attr("x", String(50*i + 46))
+      .attr("y", '48%')
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '80%')
+      .style('text-anchor', 'center');
+  }
+
+  ycoords = [.25, .50, .75];
+  for (i = 0; i < 3; i++) {
+    svg.append('path')
+      .attr('d', 'M0 ' + String(ycoords[i]*250) + ' L300 ' + String(ycoords[i]*250))
+      .style('stroke', 'white')
+      .style('stroke-width', '3px');
+
+    svg.append('text')
+      .text(String(ycoords[i]))
+      .attr("x", "1%")
+      .attr("y", String(-5 + (1-ycoords[i])*250))
+      .style('fill', 'black')
+      .style('font-family', 'courier')
+      .style('font-size', '80%')
+      .style('text-anchor', 'left');
+  }
+
   var points = svg.selectAll('.points')
     .data(districtVote);
 
   points.enter()
     .append('circle')
     .attr('class', 'points')
-    .attr('r', 3)
-    .style('fill', 'gray')
+    .attr('r', function(d, i) {
+      if (hoveredDistrict == i) {
+        return 6
+      }
+      return 3
+    })
+    .style('fill', function(d, i) {
+      if (hoveredDistrict == i) {
+        return 'orange'
+      }
+      return 'gray'
+    })
     .attr('cx', function(d, i) {
       return 50 * i + 50
     })
     .attr('cy', function(d, i) {
-      return 200*(1-d)
+      return 250*(1-d)
     })
-    .on('mouseover', function(d, i) {
-      hoveredDistrict = i;
-      d3.select(this)
-        .style('stroke', 'black')
-        .style('stroke-width', '1px')
-        .style('fill', 'yellow')
-        .attr('r', 6)
-
-      buildSidePanel();
+    .style('stroke', 'black')
+    .style('stroke-width', function(d, i) {
+      if (hoveredDistrict == i) {
+        return 1
+      }
+      return 0
     })
-    .on('mouseout', function(d) {
-      d3.select(this)
-        .style('stroke', 'black')
-        .style('stroke-width', '0px')
-        .style('fill', 'black')
-        .attr('r', 3)
-    });
 
   var scatterline = svg.selectAll('.scatterline')
     .data(districtVote);
