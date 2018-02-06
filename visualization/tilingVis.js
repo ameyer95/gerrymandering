@@ -8,7 +8,9 @@ var maptoggle = 1;
 var distinctTiles = [];
 var hoveredDistrict = 0;
 var districtVote = [.62,.62,.47,.37,.52];
-var individualDistrictVoteTest = [.4,.35,.38,.39,.28,.35,.5,.75,.8,.20,.48,.58,.90,.68,.3,.33,.78,.85,.42,.36,.38,.45,.4,.37,.35,];
+// var individualDistrictVoteTest = [.4,.35,.38,.39,.28,.35,.5,.75,.8,.20,.48,.58,.90,.68,.3,.33,.78,.85,.42,.36,.38,.45,.4,.37,.35];
+var individualDistrictVoteTest = [.9,.8,.7,.6,.5,.8,.7,.6,.5,.4,.7,.6,.5,.4,.3,.6,.5,.4,.3,.2,.5,.4,.3,.2,.1];
+
 var stateMeanVote = 0
 for (i = 0; i < individualDistrictVoteTest.length; i++) {
   stateMeanVote += individualDistrictVoteTest[i];
@@ -354,7 +356,7 @@ var voteScatter = function() {
     svg.append('path')
       .attr('d', 'M' + String(50*i + 50) + ' 0 L' + String(50*i + 50) + ' 250')
       .style('stroke', 'white')
-      .style('stroke-width', '3px');
+      .style('stroke-width', '2px');
 
     svg.append('text')
       .text(String(i + 1))
@@ -370,8 +372,13 @@ var voteScatter = function() {
   for (i = 0; i < 3; i++) {
     svg.append('path')
       .attr('d', 'M0 ' + String(ycoords[i]*250) + ' L300 ' + String(ycoords[i]*250))
-      .style('stroke', 'white')
-      .style('stroke-width', '3px');
+      .style('stroke', function(){
+        if (ycoords[i] == .50) {
+          return 'red'
+        }
+        return 'white'
+      })
+      .style('stroke-width', '2px');
 
     svg.append('text')
       .text(String(ycoords[i]))
