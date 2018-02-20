@@ -2,10 +2,10 @@ import pickle
 import pandas as pd
 
 allTilings = pickle.load(open("tilings.p", "rb"))
-polsbyScores = pickle.load(open("polsbyScores.P", "rb"))
-reockScores = pickle.load(open("reockScores.P", "rb"))
-
-print(reockScores)
+polsbyScores = pickle.load(open('AllPolsby.P', 'rb'))
+isoScores = pickle.load(open('AllIso.P', 'rb'))
+perimScores = pickle.load(open('AllPerims.P', 'rb'))
+reockScores = pickle.load(open('AllReocks.P', 'rb'))
 
 def createVertices(matrix, districtID, mapsize):
     startIndex = matrix.index(districtID)
@@ -96,15 +96,41 @@ def main():
 
         masterDistrictList.append([testmatrix_, compileDistrict(testmatrix_, mapsize_, distinctTiles_)])
 
+
+    districtIDs = [0,1,2,3,4]
+    allPolsbyScores, allIsoScores, allReockScores, allPerimScores = [],[],[],[]
+    for i, districting in enumerate(allTilings):
+        districtPolsbyScores, districtIsoScores, districtReockScores, districtPerimScores = [],[],[],[]
+        for ID in districtIDs:
+            flattenedPolsbyList = [item for sublist in polsbyScores[i] for item in sublist]
+            districtPolsbyScores.append(flattenedPolsbyList[allTilings[i].index(ID)])
+
+            flattenedIsoList = [item for sublist in isoScores[i] for item in sublist]
+            districtIsoScores.append(flattenedIsoList[allTilings[i].index(ID)])
+
+            flattenedReockList = [item for sublist in reockScores[i] for item in sublist]
+            districtReockScores.append(flattenedReockList[allTilings[i].index(ID)])
+
+            flattenedPerimList = [item for sublist in perimScores[i] for item in sublist]
+            districtPerimScores.append(flattenedPerimList[allTilings[i].index(ID)])
+
+        allPolsbyScores.append(districtPolsbyScores)
+        allIsoScores.append(districtIsoScores)
+        allReockScores.append(districtReockScores)
+        allPerimScores.append(districtPerimScores)
+
     #Create dataframe and csv file
-    dfList = [[],[]]
-    for block in masterDistrictList:
+    dfList = [[],[],[],[],[],[]]
+    for i, block in enumerate(masterDistrictList):
         dfList[0].append(block[0])
         dfList[1].append(block[1])
+        dfList[2].append(allPolsbyScores[i])
+        dfList[3].append(allIsoScores[i])
+        dfList[4].append(allReockScores[i])
+        dfList[5].append(allPerimScores[i])
 
     mydf = pd.DataFrame(dfList).transpose()
     mydf.to_csv("tilingdata.csv", index = False)
 
 if __name__ == "__main__":
-    _ = 5
-    # main()
+    main()

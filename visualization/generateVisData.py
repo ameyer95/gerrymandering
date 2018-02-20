@@ -7,6 +7,7 @@ mapsize = len(testmatrix)
 distinctTiles = list(set(testmatrix))
 
 districtTilings = pickle.load(open('FiveByFive.P', 'rb'))
+polsbyScores = pickle.load(open('AllPolsby.P', 'rb'))
 
 def transformDistrictTilings():
     mapping = {"5":0, "4":1, "3":2, "2":3, "1":4}
@@ -23,8 +24,18 @@ def transformDistrictTilings():
 
 def main():
     districtsList = transformDistrictTilings()
-    print(districtsList)
-    pickle.dump(districtsList, open("tilings.p", "wb"))
+    districtIDs = [0,1,2,3,4]
+    allPolsbyScores = []
+    for i, districting in enumerate(districtsList):
+        districtPolsbyScores = []
+        for ID in districtIDs:
+            flattenedList = [item for sublist in polsbyScores[i] for item in sublist]
+            districtPolsbyScores.append(flattenedList[districtsList[i].index(ID)])
+
+        allPolsbyScores.append(districtPolsbyScores)
+
+    print(allPolsbyScores)
+    # pickle.dump(districtsList, open("tilings.p", "wb"))
 
 
 

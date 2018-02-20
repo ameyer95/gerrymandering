@@ -2,9 +2,12 @@ import pandas as pd
 import json
 import pprint
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # voteDistribution = [.4,.35,.38,.39,.28,.35,.5,.75,.8,.20,.48,.58,.90,.68,.3,.33,.78,.85,.42,.36,.38,.45,.4,.37,.35]
-voteDistribution = [.9,.8,.7,.6,.5,.8,.7,.6,.5,.4,.7,.6,.5,.4,.3,.6,.5,.4,.3,.2,.5,.4,.3,.2,.1]
+# voteDistribution = [.9,.8,.7,.6,.5,.8,.7,.6,.5,.4,.7,.6,.5,.4,.3,.6,.5,.4,.3,.2,.5,.4,.3,.2,.1]
+voteDistribution = [.6,.45,.45,.4,.4,.6,.45,.6,.525,.45,.3,.45,.4,.45,.3,.55,.8,.4,.45,.9,.525,.45,.45,.55,.6]
+# voteDistribution = [.5,.5,.2,.4,.8,.1,.4,.7,.3,.5,.8,.5,.3,.2,.5,.2,.5,.6,.4,.7,.9,.6,.3,.5,.6]
 # voteDistribution = [.7,.6,.5,.4,.3,.7,.6,.5,.4,.3,.7,.6,.5,.4,.3,.7,.6,.5,.4,.3,.7,.6,.5,.4,.3]
 # voteDistribution = [.4]*25
 # voteDistribution.reverse()
@@ -29,23 +32,24 @@ for districting in districtData:
 
     votesByTile.append(voteDict)
 
-print(votesByTile)
-# outdf = pd.DataFrame(votesByTile)
-# print(outdf)
-# outdf.to_csv("Vote_Distributions.csv", index = False)
+EGList = []
+for districting in votesByTile:
+    repWastedPct, demWastedPct = 0, 0
+    for district in districting:
+        districtVote = districting[district]
+        if districtVote >= .5:
+            demWastedPct += districtVote - .5
+            repWastedPct += 1 - districtVote
+        elif districtVote < .5:
+            demWastedPct += districtVote
+            repWastedPct += (1 - districtVote) - .5
 
-seatList = []
-for item in votesByTile:
-    seats = [0, 0, 0]
-    for key in item:
-        if item[key] > .5:
-            seats[0] += 1
-        elif item[key] < .5:
-            seats[1] += 1
-        elif item[key] == .5:
-            seats[2] += 1
+    EG = (demWastedPct - repWastedPct)/5
+    EGList.append(EG)
 
-    seatList.append(seats)
-
-seatList.sort()
-pprint.pprint(seatList)
+EGList.sort()
+print(sum(EGList) / len(EGList))
+plt.scatter(list(range(len(EGList))), EGList, marker = 'o')
+plt.xlabel("Districtings (sorted)")
+plt.ylabel("Efficiency Gap")
+plt.show()

@@ -18,21 +18,21 @@
           padding-top: 60px;
           float: left;
           width: 620px;
-          margin: 0 auto;
           background-color: white;
         }
 
         #sideStuff {
           float: left;
-          padding-left: 40px;
-          width: 320px;
+          padding-left: 0px;
+          width: 390px;
           height: 300px;
         }
 
         #voteScatter {
           float: left;
+          padding-top: 50px;
           padding-left: 40px;
-          width: 340px;
+          width: 410px;
           height: 300px;
         }
 
@@ -125,7 +125,7 @@
             background-color: blue;
             color: white;
             padding: 16px;
-            margin-left: 100px;
+            margin-left: 50px;
             font-size: 16px;
             border: none;
             cursor: pointer;
@@ -133,6 +133,21 @@
 
         /* Map button on hover & focus */
         .togglebtn:hover, .togglebtn:focus {
+            background-color: #0438e0;
+        }
+
+        .votebtn {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            margin-left: 0px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Map button on hover & focus */
+        .votebtn:hover, .votebtn:focus {
             background-color: #0438e0;
         }
 
@@ -146,14 +161,14 @@
     <div class="dropdown">
       <button onclick="myFunction()" class="dropbtn">Change Vote Dist.</button>
       <div id="myDropdown" class="dropdown-content">
-        <button onclick="distributeVoteUniform()" class="dropButton">Uniform</button>
-        <button onclick="distributeVoteUniformTrimmed()" class="dropButton">Uniform .4-.6</button>
-        <button onclick="distributeVoteNormal()" class="dropButton">Normal</button>
-        <button onclick="distributeVoteBiased()" class="dropButton">Biased</button>
+        <button onclick="urbanBeltwayDist()" class="dropButton">Urban-Beltway</button>
+        <button onclick="wiscoDist()" class="dropButton">Wisconsin</button>
+        <button onclick="daneDist()" class="dropButton">Dane</button>
+        <button onclick="diagonalDist()" class="dropButton">Diagonal</button>
       </div>
       <button onclick="drawNewDistricts()" class="mapbtn">New Districting</button>
       <button onclick="mapToggle()" class="togglebtn">Toggle</button>
-
+      <button onclick="borderToggle()" class="votebtn">X</button>
     </div>
 
     <div id="tilingDiv"></div>
